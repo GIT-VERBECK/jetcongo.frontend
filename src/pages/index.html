@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetCongo - Accueil</title>
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Placeholder (Loaded via JS) -->
+    <div id="header-container"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Explorez la RDC <br><span>avec JetCongo</span></h1>
+                <p>Vols directs et confortables au départ de Goma vers toutes les grandes villes du pays.</p>
+            </div>
+        </section>
+
+        <!-- Search Form Component -->
+        <div class="search-container">
+            <div class="search-card">
+                <div class="search-tabs">
+                    <span class="tab active"><i class="fas fa-sync-alt"></i> Aller-retour</span>
+                    <span class="tab"><i class="fas fa-arrow-right"></i> Aller simple</span>
+                </div>
+                <div class="search-grid">
+                    <div class="input-group">
+                        <label>Ville de départ</label>
+                        <div class="relative-input">
+                            <i class="fas fa-plane-departure input-icon"></i>
+                            <select id="departure-city" class="input-field with-icon">
+                                <option value="" disabled selected>Sélectionnez...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Ville d'arrivée</label>
+                        <div class="relative-input">
+                            <i class="fas fa-plane-arrival input-icon"></i>
+                            <select id="arrival-city" class="input-field with-icon">
+                                <option value="" disabled selected>Sélectionnez...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Date de départ</label>
+                        <input type="date" class="input-field">
+                    </div>
+                    <button class="btn-search">
+                        <i class="fas fa-search"></i> Rechercher un vol
+                    </button>
+                </div>
+                <div class="search-info">
+                    <div class="info-item">
+                        <i class="fas fa-user-friends"></i> 1 Adulte, Économie
+                    </div>
+                    <div class="info-item success-text">
+                        <i class="fas fa-check-circle"></i> Paiement sécurisé
+                    </div>
+                    <div class="info-item primary-text">
+                        <i class="fas fa-award"></i> Meilleurs tarifs garantis
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popular Destinations -->
+        <section class="section">
+            <div class="section-header">
+                <div>
+                    <h2>Destinations Populaires</h2>
+                    <p>Découvrez nos liaisons les plus demandées au départ de Goma.</p>
+                </div>
+                <a href="#" class="view-all">Voir tout <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="destinations-grid">
+                <!-- Card 1 -->
+                <div class="card">
+                    <div class="card-img card-kin">
+                        <span class="badge-price">Dès $150</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>Goma &rarr; Kinshasa</h3>
+                        <p>Vols quotidiens, direct 2h 45min</p>
+                        <a href="flights.html?depart=Goma&arrivee=Kinshasa" class="btn-card">Réserver maintenant</a>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="card">
+                    <div class="card-img card-lub">
+                        <span class="badge-price">Dès $180</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>Goma &rarr; Lubumbashi</h3>
+                        <p>3 vols par semaine, direct 1h 50min</p>
+                        <a href="flights.html?depart=Goma&arrivee=Lubumbashi" class="btn-card">Réserver maintenant</a>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="card">
+                    <div class="card-img card-kis">
+                        <span class="badge-price">Dès $120</span>
+                    </div>
+                    <div class="card-body">
+                        <h3>Goma &rarr; Kisangani</h3>
+                        <p>Vols directs tous les mercredis</p>
+                        <a href="flights.html?depart=Goma&arrivee=Kisangani" class="btn-card">Réserver maintenant</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter">
+            <h2>Ne manquez aucune offre</h2>
+            <p>Inscrivez-vous à notre newsletter pour recevoir les dernières promotions et actualités de JetCongo
+                directement dans votre boîte mail.</p>
+            <form class="newsletter-form" id="newsletter-form">
+                <input type="email" placeholder="votre@email.com" required>
+                <button type="submit" class="btn-signup btn-no-border">S'abonner</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder (Loaded via JS) -->
+    <div id="footer-container"></div>
+
+    <!-- External Script JS -->
+    <script src="../js/scripts.js"></script>
+    <!-- Logique de recherche home → flights.html -->
+    <script src="../js/home.js"></script>
+</body>
+
+</html>

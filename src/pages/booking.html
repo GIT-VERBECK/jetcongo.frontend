@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetCongo - Détails de la Réservation</title>
+
+    <!-- Polices & Icônes globales (cohérence avec le reste du site) -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+
+    <!-- Tailwind Play CDN (pour le layout spécifique de cette page) -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "poppins": ["Poppins", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        .glass-card {
+            @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-white/20 dark:border-slate-800/50;
+        }
+
+        .input-field {
+            @apply w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 min-h-screen">
+    <!-- Header chargé via scripts.js -->
+    <div id="header-container"></div>
+
+    <div class="flex">
+        <main class="flex-1 min-h-screen p-6 lg:p-12">
+            <div id="reservation-alert" class="mb-4 hidden"></div>
+
+            <div class="mb-8 flex items-center gap-4 lg:mb-10">
+                <button type="button"
+                    class="p-2 bg-white dark:bg-slate-800 rounded-full border border-primary/10 text-slate-500 hover:text-primary transition-colors"
+                    onclick="history.back()" aria-label="Retour à la liste des vols">
+                    <span class="material-icons-round">arrow_back</span>
+                </button>
+                <div>
+                    <h1 class="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white">Détails de la
+                        Réservation</h1>
+                    <p class="text-slate-500 dark:text-slate-400">Finalisez votre voyage vers votre destination.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Résumé du vol (rempli dynamiquement par reservation.js) -->
+                <section id="flight-summary"
+                    class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 overflow-hidden shadow-sm">
+                    <!-- Contenu injecté par reservation.js -->
+                </section>
+
+                <!-- Formulaire passagers -->
+                <section
+                    class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 p-8 shadow-sm space-y-6">
+                    <h3 class="text-lg font-bold mb-2 flex items-center gap-2">
+                        <span class="material-icons-round text-primary">groups</span>
+                        Informations Passagers
+                    </h3>
+
+                    <form id="reservation-form" novalidate class="space-y-6">
+                        <div>
+                            <p class="text-sm text-slate-500">Places encore disponibles: 14</p>
+                            <br>
+                            <label for="seats"
+                                class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                Nombre de places (seats)
+                            </label>
+                            <div class="flex items-center gap-4">
+                                <div class="flex-1 max-w-[100%] relative">
+                                  <input id="seats" name="seats" type="number" min="1" value="1"
+                                         class="input-field pl-12 pr-4 text-right" />
+                                  <span class="material-icons-round absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                                    event_seat
+                                  </span>
+                                </div>
+                              </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="fullName"
+                                    class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                    Nom du passager principal
+                                </label>
+                                <input id="fullName" name="fullName" type="text"
+                                    placeholder="Ex: Christian Kalonji" class="input-field" required />
+                            </div>
+                            <div>
+                                <label for="email"
+                                    class="block text-sm font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                    Email
+                                </label>
+                                <input id="email" name="email" type="email" placeholder="vous@example.com"
+                                    class="input-field" required />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            
+                            
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Résumé paiement + bloc sécurité -->
+                <div class="space-y-6">
+                    <section id="payment-summary">
+                        <!-- Contenu injecté par reservation.js -->
+                    </section>
+                    <br>
+
+                    <div>
+                        <button type="button" id="submit-reservation"
+                            class="w-full bg-primary hover:brightness-110 text-white py-4 rounded-xl font-bold shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+                            Confirmer la réservation
+                            <span class="material-icons-round">arrow_forward</span>
+                        </button>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-slate-900 rounded-2xl border border-primary/5 p-6 shadow-sm flex items-start gap-4">
+                         
+                    </div>
+                </div>
+            </div>
+
+ 
+        </main>
+    </div>
+
+    <!-- Footer chargé via scripts.js -->
+    <div id="footer-container"></div>
+
+    <script src="../js/scripts.js"></script>
+    <script src="../js/reservation.js"></script>
+</body>
+
+</html>

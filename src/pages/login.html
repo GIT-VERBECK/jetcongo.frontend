@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetCongo - Connexion</title>
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+        <!-- Back Home Link -->
+        <a href="index.html" class="back-home" title="Retour à l'accueil">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+
+        <!-- Logo Container -->
+        <div class="auth-logo-container">
+            <img src="../../public/logo_sans_bg.png" alt="JetCongo Logo" class="auth-logo">
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form">
+            <div class="auth-input-group">
+                <label class="auth-label">Adresse Email</label>
+                <div class="auth-input-wrapper">
+                    <i class="far fa-envelope auth-icon"></i>
+                    <input type="email" id="email" class="auth-input" placeholder="nom@entreprise.com" required>
+                </div>
+                <div id="email-error" class="error-message">Veuillez entrer une adresse email valide.</div>
+            </div>
+
+            <div class="auth-input-group">
+                <label class="auth-label">Mot de passe</label>
+                <div class="auth-input-wrapper">
+                    <i class="fas fa-lock auth-icon"></i>
+                    <input type="password" id="password" class="auth-input" placeholder="********" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+                <div id="password-error" class="error-message">Le mot de passe est requis.</div>
+            </div>
+
+            <button type="submit" class="btn-auth">
+                Se connecter <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="auth-divider">
+            <span>Pas encore de compte ?</span>
+        </div>
+
+        <a href="register.html" class="auth-link-container">
+            <i class="fas fa-user-plus"></i> Créer un compte entreprise
+        </a>
+    </div>
+
+    <!-- Script connection -->
+    <script src="../js/scripts.js"></script>
+</body>
+
+</html>

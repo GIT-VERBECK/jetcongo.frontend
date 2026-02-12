@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JetCongo - Finalisation de la Réservation</title>
+
+    <!-- Styles globaux + icônes (cohérence avec le reste du site) -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="../css/styles.css" />
+
+    <!-- Tailwind pour la mise en page spécifique paiement -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        display: ["Plus Jakarta Sans"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: "Plus Jakarta Sans", "Inter", sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 min-h-screen">
+    <!-- Header global -->
+    <div id="header-container"></div>
+
+    <main class="max-w-7xl mx-auto px-4 py-6 lg:py-8">
+        <!-- Barre de progression -->
+        
+
+        <!-- Zone d'alerte -->
+        <div id="payment-alert" class="mb-6 hidden"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Colonne gauche : vol + mode de paiement -->
+            <div class="lg:col-span-8 space-y-8">
+                <!-- Récapitulatif du vol -->
+                <section
+                    class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                    <div
+                        class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            <span class="material-icons text-primary">airplane_ticket</span>
+                            Récapitulatif de votre voyage
+                        </h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                            <div class="flex items-center gap-4">
+                                <div class="text-center">
+                                    <div id="pay-depart-code" class="text-2xl font-bold">---</div>
+                                    <div id="pay-depart-city" class="text-xs text-slate-500 uppercase">Ville départ
+                                    </div>
+                                </div>
+                                <div class="flex flex-col items-center px-4 flex-grow min-w-[120px]">
+                                    <div id="pay-meta"
+                                        class="text-[10px] text-slate-400 font-bold uppercase mb-1">Direct</div>
+                                    <div class="w-full h-px bg-slate-200 dark:bg-slate-700 relative">
+                                        <span
+                                            class="material-icons absolute left-1/2 -translate-x-1/2 -top-3 text-primary bg-white dark:bg-slate-900 px-1">flight</span>
+                                    </div>
+                                    <div id="pay-flight-id" class="text-[10px] text-slate-500 mt-2">Vol</div>
+                                </div>
+                                <div class="text-center">
+                                    <div id="pay-arrive-code" class="text-2xl font-bold">---</div>
+                                    <div id="pay-arrive-city" class="text-xs text-slate-500 uppercase">Ville arrivée
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center gap-6 border-l border-slate-100 dark:border-slate-800 pl-6">
+                                <div>
+                                    <div class="text-xs text-slate-500 uppercase font-bold mb-1">Passager</div>
+                                    <div id="pay-passenger" class="font-semibold">-</div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-slate-500 uppercase font-bold mb-1">Date / Heure</div>
+                                    <div id="pay-datetime" class="font-semibold text-primary text-sm">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Mode de paiement (UI uniquement pour l'instant) -->
+                <section
+                    class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 dark:border-slate-800">
+                        <h2 class="text-lg font-bold flex items-center gap-2">
+                            <span class="material-icons text-primary">account_balance_wallet</span>
+                            Mode de Paiement
+                        </h2>
+                    </div>
+                    <div class="p-6 space-y-8">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <!-- Mobile Money (actif) -->
+                            <label
+                                class="relative flex flex-col items-center justify-center p-4 border-2 border-primary bg-primary/5 rounded-xl cursor-pointer transition-all">
+                                <input checked class="absolute top-3 right-3 text-primary focus:ring-primary h-4 w-4"
+                                    name="payment_method" type="radio" />
+                                <div
+                                    class="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-2 shadow-sm">
+                                    <span class="material-icons text-primary text-3xl">smartphone</span>
+                                </div>
+                                <span class="text-sm font-bold">Mobile Money</span>
+                                <span class="text-[10px] text-slate-500 mt-1">M-Pesa, Airtel, Orange</span>
+                            </label>
+                            <!-- Autres modes (désactivés visuellement et fonctionnellement) -->
+                            <label
+                                class="relative flex flex-col items-center justify-center p-4 border-2 border-slate-100 dark:border-slate-800 rounded-xl cursor-not-allowed opacity-50">
+                                <input class="absolute top-3 right-3 h-4 w-4" type="radio" disabled />
+                                <div
+                                    class="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-2 shadow-sm">
+                                    <span class="material-icons text-slate-400 text-3xl">credit_card</span>
+                                </div>
+                                <span class="text-sm font-bold">Carte Bancaire</span>
+                                <span class="text-[10px] text-slate-500 mt-1">Bientôt disponible</span>
+                            </label>
+                            <label
+                                class="relative flex flex-col items-center justify-center p-4 border-2 border-slate-100 dark:border-slate-800 rounded-xl cursor-not-allowed opacity-50">
+                                <input class="absolute top-3 right-3 h-4 w-4" type="radio" disabled />
+                                <div
+                                    class="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-2 shadow-sm">
+                                    <span class="material-icons text-slate-400 text-3xl">account_balance</span>
+                                </div>
+                                <span class="text-sm font-bold">Virement</span>
+                                <span class="text-[10px] text-slate-500 mt-1">Bientôt disponible</span>
+                            </label>
+                            <label
+                                class="relative flex flex-col items-center justify-center p-4 border-2 border-slate-100 dark:border-slate-800 rounded-xl cursor-not-allowed opacity-50">
+                                <input class="absolute top-3 right-3 h-4 w-4" type="radio" disabled />
+                                <div
+                                    class="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-2 shadow-sm">
+                                    <span class="material-icons text-slate-400 text-3xl">payments</span>
+                                </div>
+                                <span class="text-sm font-bold">Cash en Agence</span>
+                                <span class="text-[10px] text-slate-500 mt-1">Bientôt disponible</span>
+                            </label>
+                        </div>
+
+                        <div
+                            class="bg-background-light dark:bg-slate-800/50 p-6 rounded-xl border border-slate-200 dark:border-slate-700">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">Choisir votre opérateur</label>
+                                    <div class="flex gap-3">
+                                        <button
+                                            class="flex-1 py-2 px-3 border border-primary bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center gap-2">
+                                            <div class="w-2 h-2 rounded-full bg-red-600"></div>
+                                            <span class="text-xs font-bold">M-Pesa</span>
+                                        </button>
+                                        <button
+                                            class="flex-1 py-2 px-3 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center gap-2">
+                                            <div class="w-2 h-2 rounded-full bg-orange-500"></div>
+                                            <span class="text-xs font-bold">Orange</span>
+                                        </button>
+                                        <button
+                                            class="flex-1 py-2 px-3 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center gap-2">
+                                            <div class="w-2 h-2 rounded-full bg-red-400"></div>
+                                            <span class="text-xs font-bold">Airtel</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold mb-2">Numéro de téléphone</label>
+                                    <div class="relative">
+                                        <div
+                                            class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 font-bold text-sm">
+                                            +243
+                                        </div>
+                                        <input id="mobile-phone" name="mobile-phone" maxlength="9"
+                                            class="block w-full pl-12 pr-4 py-2 border-slate-300 dark:border-slate-600 dark:bg-slate-900 rounded-lg focus:ring-primary focus:border-primary"
+                                            placeholder="810000000" type="text" inputmode="numeric" />
+                                    </div>
+                                    <p id="mobile-phone-error"
+                                        class="mt-1 text-xs text-red-500 hidden">
+                                        Veuillez compléter le numéro Mobile Money avec exactement 9 chiffres (sans indicatif).
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-4 bg-primary/10 rounded-lg flex gap-3">
+                                <span class="material-icons text-primary text-xl">info</span>
+                                <p
+                                    class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                    Après avoir cliqué sur "Payer maintenant", vous recevrez une demande de confirmation
+                                    sur votre téléphone. Veuillez saisir votre code PIN secret pour autoriser la
+                                    transaction.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Colonne droite : résumé du paiement -->
+            <div class="lg:col-span-4">
+                <div class="sticky top-24 space-y-6">
+                    <section
+                        class="bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
+                        <div
+                            class="p-6 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
+                            <h3 class="font-bold text-lg">Détails du paiement</h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between text-sm">
+                                <span id="pay-flight-label" class="text-slate-500">Vol Aller</span>
+                                <span id="pay-flight-price" class="font-medium">$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-500">Nombre de places</span>
+                                <span id="pay-seats" class="font-medium">x 1</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-500">Taxes et frais de service</span>
+                                <span id="pay-taxes" class="font-medium">$0.00</span>
+                            </div>
+                            <div class="pt-4 border-t border-slate-100 dark:border-slate-800">
+                                <div class="flex justify-between items-end mb-1">
+                                    <span class="text-base font-bold">Total à payer</span>
+                                    <span id="pay-total" class="text-3xl font-black text-primary">$0.00</span>
+                                </div>
+                            </div>
+                            <div class="pt-6 space-y-4">
+                                <div class="flex items-start gap-3">
+                                    <input class="mt-1 rounded text-primary focus:ring-primary border-slate-300"
+                                        id="terms" type="checkbox" />
+                                    <label class="text-xs text-slate-500 leading-tight" for="terms">
+                                        J'accepte les
+                                        <a class="text-primary hover:underline" href="#">Conditions Générales de
+                                            Vente</a>
+                                        et la
+                                        <a class="text-primary hover:underline" href="#">Politique de
+                                            Confidentialité</a>
+                                        de JetCongo.
+                                    </label>
+                                </div>
+                                <button id="pay-now"
+                                    class="w-full bg-primary hover:bg-blue-600 text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/30 transition-all flex items-center justify-center gap-2 group disabled:opacity-60 disabled:cursor-not-allowed">
+                                    Payer maintenant
+                                    <span
+                                        class="material-icons group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div
+                        class="bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800/50 p-4 rounded-xl flex gap-3">
+                        <div
+                            class="w-10 h-10 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center shrink-0 shadow-sm">
+                            <span class="material-icons text-primary">support_agent</span>
+                        </div>
+                        <div>
+                            <h4
+                                class="text-xs font-bold text-slate-800 dark:text-blue-200 uppercase tracking-wide">
+                                Besoin d'aide ?</h4>
+                            <p class="text-[11px] text-slate-600 dark:text-blue-300 mt-1">
+                                Notre équipe est disponible 24/7 pour vous assister dans votre paiement.
+                            </p>
+                            <p class="text-xs font-bold text-primary mt-1">+243 81 222 3333</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer global -->
+    <div id="footer-container"></div>
+
+    <script src="../js/scripts.js"></script>
+    <script src="../js/payment.js"></script>
+</body>
+
+</html>
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JetCongo - Paiement</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <h1>Paiement sécurisé</h1>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "jetcongo-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for JetCongo flight booking system",
+  "scripts": {
+    "start": "serve src/pages"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.0"
+  }
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JetCongo - Inscription</title>
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body class="auth-page">
+
+    <div class="auth-container">
+        <!-- Back Home Link -->
+        <a href="index.html" class="back-home" title="Retour à l'accueil">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <!-- Logo Container -->
+        <div class="auth-logo-container">
+            <img src="../../public/logo_sans_bg.png" alt="JetCongo Logo" class="auth-logo">
+        </div>
+
+        <!-- Register Form -->
+        <form id="register-form" class="auth-form">
+            <div class="auth-input-group">
+                <label class="auth-label">Nom complet</label>
+                <div class="auth-input-wrapper">
+                    <i class="far fa-user auth-icon"></i>
+                    <input type="text" id="name" class="auth-input" placeholder="Votre nom" required minlength="2">
+                </div>
+                <div id="name-error" class="error-message">Le nom doit faire au moins 2 caractères.</div>
+            </div>
+
+            <div class="auth-input-group">
+                <label class="auth-label">Adresse Email</label>
+                <div class="auth-input-wrapper">
+                    <i class="far fa-envelope auth-icon"></i>
+                    <input type="email" id="reg-email" class="auth-input" placeholder="nom@entreprise.com" required>
+                </div>
+                <div id="email-error" class="error-message">Veuillez entrer une adresse email valide.</div>
+            </div>
+
+            <div class="auth-input-group">
+                <label class="auth-label">Mot de passe</label>
+                <div class="auth-input-wrapper">
+                    <i class="fas fa-lock auth-icon"></i>
+                    <input type="password" id="reg-password" class="auth-input" placeholder="********" required>
+                    <button type="button" class="password-toggle" onclick="togglePassword('reg-password')">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+                <div id="password-error" class="error-message">Le mot de passe doit faire au moins 8 caractères (1
+                    majuscule, 1 chiffre).</div>
+            </div>
+
+            <button type="submit" class="btn-auth">
+                S'inscrire <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="auth-divider">
+            <span>Déjà un compte ?</span>
+        </div>
+
+        <a href="login.html" class="auth-link-container">
+            <i class="fas fa-sign-in-alt"></i> Se connecter
+        </a>
+    </div>
+
+    <!-- Script connection -->
+    <script src="../js/scripts.js"></script>
+</body>
+
+</html>
