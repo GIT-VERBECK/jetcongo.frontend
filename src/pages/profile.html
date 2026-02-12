@@ -56,7 +56,8 @@
     <!-- Header global -->
     <div id="header-container"></div>
 
-    <main class="max-w-7xl mx-auto px-6 py-10">
+    <main class="max-w-7xl mx-auto py-12">
+
         <div class="mb-8">
             <h1 class="text-3xl font-bold tracking-tight">Mon Compte</h1>
             <p class="text-slate-500 dark:text-slate-400 mt-1">
@@ -86,20 +87,15 @@
                             JetCongo</span>
                     </div>
                     <div class="p-2">
-                        <a href="#personal-info"
+                        <a id="nav-personal" href="#personal-info"
                             class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors">
                             <span class="material-icons text-xl">person</span>
                             <span class="font-medium text-sm">Informations personnelles</span>
                         </a>
-                        <a href="#security"
+                        <a id="nav-security" href="#security"
                             class="flex items-center gap-3 px-4 py-3 bg-primary/5 text-primary border-r-4 border-primary rounded-lg transition-colors">
                             <span class="material-icons text-xl">security</span>
                             <span class="font-medium text-sm">Sécurité</span>
-                        </a>
-                        <a href="#preferences"
-                            class="flex items-center gap-3 px-4 py-3 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-colors">
-                            <span class="material-icons text-xl">tune</span>
-                            <span class="font-medium text-sm">Préférences</span>
                         </a>
                         <button type="button" onclick="logout()"
                             class="w-full text-left flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-lg transition-colors mt-4">
@@ -112,110 +108,53 @@
 
             <!-- Main Content Area -->
             <div class="lg:col-span-9 space-y-8">
-                <!-- Personal Info Section -->
-                <section id="personal-info"
-                    class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-primary/10 flex justify-between items-center">
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary">
-                                <span class="material-icons">contact_mail</span>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-lg">Détails du profil</h3>
-                                <p class="text-xs text-slate-500">Vos coordonnées de compte.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-1">
-                                <label
-                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nom
-                                    complet</label>
-                                <p id="profile-full-name"
-                                    class="font-medium text-slate-800 dark:text-slate-200">
-                                    -
-                                </p>
-                            </div>
-                            <div class="space-y-1">
-                                <label
-                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider">Adresse
-                                    e-mail</label>
-                                <p id="profile-email"
-                                    class="font-medium text-slate-800 dark:text-slate-200">
-                                    -
-                                </p>
-                            </div>
-                            <div class="space-y-1">
-                                <label
-                                    class="text-xs font-bold text-slate-400 uppercase tracking-wider">Rôle du
-                                    compte</label>
-                                <p id="profile-role"
-                                    class="font-medium text-slate-800 dark:text-slate-200">
-                                    -
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Security Section (UI statique pour l'instant) -->
-                <section id="security"
-                    class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-primary/10 flex items-center gap-3">
-                        <div
-                            class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500">
-                            <span class="material-icons">lock</span>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg">Sécurité</h3>
-                            <p class="text-xs text-slate-500">
-                                Gérer la sécurité de votre compte et votre mot de passe.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="max-w-xl">
-                            <h4
-                                class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 uppercase tracking-wide">
-                                Modifier le mot de passe
-                            </h4>
-                            <form class="space-y-5">
-                                <div class="space-y-2">
-                                    <label
-                                        class="text-sm font-semibold text-slate-600 dark:text-slate-400">Mot de
-                                        passe actuel</label>
-                                    <div class="relative">
-                                        <input type="password" placeholder="••••••••••••"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none" />
-                                        <span
-                                            class="material-icons absolute right-3 top-3 text-slate-400 cursor-pointer text-sm">visibility</span>
-                                    </div>
+                <!-- Sections Infos personnelles + Sécurité côte à côte -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                    <!-- Personal Info Section -->
+                    <section id="personal-info"
+                        class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden h-full flex flex-col">
+                        <div class="px-6 py-6 border-b border-primary/10 flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-primary">
+                                    <span class="material-icons">contact_mail</span>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                    <div class="space-y-2">
-                                        <label
-                                            class="text-sm font-semibold text-slate-600 dark:text-slate-400">Nouveau
-                                            mot de passe</label>
-                                        <input type="password" placeholder="Min. 8 caractères"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none" />
-                                    </div>
-                                    <div class="space-y-2">
-                                        <label
-                                            class="text-sm font-semibold text-slate-600 dark:text-slate-400">Confirmer
-                                            le mot de passe</label>
-                                        <input type="password" placeholder="Répéter le mot de passe"
-                                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none" />
-                                    </div>
+                                <div>
+                                    <h3 class="font-bold text-lg">Détails du profil</h3>
+                                    <p class="text-xs text-slate-500">Vos coordonnées de compte.</p>
                                 </div>
-                                <div class="flex items-center gap-2 mt-4 text-xs text-slate-500">
-                                    <span class="material-icons text-sm text-green-500">check_circle</span>
-                                    <span>Doit inclure au moins un chiffre et un caractère spécial</span>
+                            </div>
+                        </div>
+                        <div class="px-6 py-6 flex-1 flex flex-col">
+                            <form id="personal-info-form" class="space-y-6 flex-1 flex flex-col">
+                                <div class="grid grid-cols-1 gap-6">
+                                    <div class="flex flex-col space-y-2">
+                                        <label
+                                            class="text-xs font-bold text-slate-400 uppercase tracking-wider">Nom
+                                            complet</label>
+                                        <input id="profile-full-name" type="text"
+                                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none" />
+                                    </div>
+                                    <div class="flex flex-col space-y-2">
+                                        <label
+                                            class="text-xs font-bold text-slate-400 uppercase tracking-wider">Adresse
+                                            e-mail</label>
+                                        <input id="profile-email" type="email"
+                                            class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none" />
+                                    </div>
+                                    <div class="flex flex-col space-y-2">
+                                        <label
+                                            class="text-xs font-bold text-slate-400 uppercase tracking-wider">Rôle du
+                                            compte</label>
+                                        <p id="profile-role"
+                                            class="font-medium text-slate-800 dark:text-slate-200">
+                                            -
+                                        </p>
+                                    </div>
                                 </div>
                                 <div
-                                    class="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 dark:border-slate-800">
-                                    <button type="button"
+                                    class="flex items-center justify-end gap-3 pt-6 mt-auto border-t border-slate-100 dark:border-slate-800">
+                                    <button type="button" id="personal-cancel-btn"
                                         class="px-6 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
                                         Annuler
                                     </button>
@@ -226,30 +165,80 @@
                                 </div>
                             </form>
                         </div>
-                    </div>
-                </section>
+                    </section>
+
+                    <!-- Security Section -->
+                    <section id="security"
+                        class="bg-white dark:bg-slate-900 rounded-xl border border-primary/10 shadow-sm overflow-hidden h-full flex flex-col">
+                        <div class="px-6 py-6 border-b border-primary/10 flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-lg bg-amber-50 dark:bg-amber-900/20 flex items-center justify-center text-amber-500">
+                                <span class="material-icons">lock</span>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Sécurité</h3>
+                                <p class="text-xs text-slate-500">
+                                    Gérer la sécurité de votre compte et votre mot de passe.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="px-6 py-6 flex-1 flex flex-col">
+                            <div class="flex-1 flex flex-col">
+                                <h4
+                                    class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-6 uppercase tracking-wide">
+                                    Modifier le mot de passe
+                                </h4>
+                                <form id="password-form" class="space-y-5 flex-1 flex flex-col">
+                                    <div class="space-y-2">
+                                        <label
+                                            class="text-sm font-semibold text-slate-600 dark:text-slate-400">Mot de
+                                            passe actuel</label>
+                                        <div class="relative">
+                                            <input id="current-password" type="password" placeholder="••••••••••••"
+                                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none" />
+                                            <span
+                                                class="material-icons absolute right-3 top-3 text-slate-400 cursor-pointer text-sm">visibility</span>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-sm font-semibold text-slate-600 dark:text-slate-400">Nouveau
+                                                mot de passe</label>
+                                            <input id="new-password" type="password" placeholder="Min. 8 caractères"
+                                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none" />
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label
+                                                class="text-sm font-semibold text-slate-600 dark:text-slate-400">Confirmer
+                                                le mot de passe</label>
+                                            <input id="confirm-password" type="password" placeholder="Répéter le mot de passe"
+                                                class="w-full bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-sm outline-none" />
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2 mt-4 text-xs text-slate-500">
+                                        <span class="material-icons text-sm text-green-500">check_circle</span>
+                                        <span>Doit inclure au moins un chiffre et un caractère spécial</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-end gap-3 pt-6 mt-auto border-t border-slate-100 dark:border-slate-800">
+                                        <button type="button"
+                                            class="px-6 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                                            Annuler
+                                        </button>
+                                        <button type="submit"
+                                            class="px-8 py-2.5 bg-primary text-white text-sm font-bold rounded-lg shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                                            Sauvegarder les modifications
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                </div>
 
                 <!-- 2FA Bloc informatif -->
-                <div
-                    class="bg-primary/5 rounded-xl border border-primary/20 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-white dark:bg-slate-800 p-3 rounded-full shadow-sm">
-                            <span class="material-icons text-primary text-3xl">verified_user</span>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-800 dark:text-slate-100">
-                                Double authentification (2FA)
-                            </h4>
-                            <p class="text-sm text-slate-600 dark:text-slate-400">
-                                Ajoutez une couche de sécurité supplémentaire à votre compte JetCongo.
-                            </p>
-                        </div>
-                    </div>
-                    <button type="button"
-                        class="whitespace-nowrap bg-white dark:bg-slate-800 border border-primary/20 text-primary px-6 py-2.5 rounded-lg text-sm font-bold hover:shadow-md transition-all">
-                        Activer maintenant
-                    </button>
-                </div>
+        
             </div>
         </div>
     </main>
