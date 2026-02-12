@@ -12,9 +12,15 @@
             <li><a href="booking.html">Mes réservations</a></li>
             <li><a href="index.html">Aide</a></li>
         </ul>
-        <div class="nav-auth">
+        <div style="display:flex;align-items:center;gap:16px;">
+            <button id="theme-toggle-btn"
+                    style="border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:6px;border-radius:9999px;">
+                <span id="theme-toggle-icon" class="material-icons-outlined" style="color:#64748b;">dark_mode</span>
+            </button>
+            <div class="nav-auth">
             <a href="login.html" class="btn-login">Connexion</a>
             <a href="register.html" class="btn-signup">S'inscrire</a>
+        </div>
         </div>
     </nav>
 </header>

@@ -4,6 +4,39 @@
 // En production : remplacer par l'URL Render, par ex. 'https://jetcongo-backend.onrender.com/api/v1'.
 const API_BASE_URL = 'http://127.0.0.1:8001/api/v1';
 
+// --- Thème global (light/dark) ---
+function applyTheme(theme) {
+    const root = document.documentElement;
+    if (theme === 'dark') {
+        root.classList.add('dark');
+    } else {
+        root.classList.remove('dark');
+    }
+    localStorage.setItem('jetcongo_theme', theme);
+
+    const icon = document.getElementById('theme-toggle-icon');
+    if (icon) {
+        icon.textContent = theme === 'dark' ? 'light_mode' : 'dark_mode';
+    }
+}
+
+function initTheme() {
+    try {
+        const saved = localStorage.getItem('jetcongo_theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = saved || (prefersDark ? 'dark' : 'light');
+        applyTheme(theme);
+    } catch (e) {
+        // Fallback sans localStorage
+        applyTheme('light');
+    }
+}
+
+function toggleTheme() {
+    const isDark = document.documentElement.classList.contains('dark');
+    applyTheme(isDark ? 'light' : 'dark');
+}
+
 // Simple système de notifications (push) réutilisable
 // type: "success" | "error" | "info"
 function showNotification(message, type = 'info') {
@@ -219,7 +252,7 @@ async function handleLogin(e) {
 
         if (response.ok) {
             localStorage.setItem('jetcongo_token', data.access_token);
-            window.location.href = 'flights.html';
+            await redirectAfterLogin(data.access_token);
         } else {
             showNotification(data.detail || "Identifiants incorrects.", 'error');
         }
@@ -297,7 +330,7 @@ async function handleRegister(e) {
 
             if (loginRes.ok) {
                 localStorage.setItem('jetcongo_token', loginData.access_token);
-                window.location.href = 'flights.html';
+                await redirectAfterLogin(loginData.access_token);
             }
         } else {
             const errorData = await response.json();
@@ -310,6 +343,32 @@ async function handleRegister(e) {
         btn.disabled = false;
         btn.innerHTML = "S'inscrire <i class=\"fas fa-arrow-right\"></i>";
     }
+}
+
+// Rediriger selon le rôle après login
+async function redirectAfterLogin(token) {
+    try {
+        const meRes = await fetch(`${API_BASE_URL}/users/me`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (meRes.ok) {
+            const user = await meRes.json();
+            const role = (user.role || '').toLowerCase();
+
+            if (role === 'agent') {
+                window.location.href = 'agent-dashboard.html';
+                return;
+            }
+        }
+    } catch (e) {
+        console.error('Erreur lors de la récupération du profil pour la redirection', e);
+    }
+
+    // Fallback pour tous les autres rôles / en cas d'erreur
+    window.location.href = 'flights.html';
 }
 
 // UI: Update Header based on Auth status
@@ -365,6 +424,13 @@ function logout() {
 
 // Page Initialization
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+
+    const themeToggleBtn = document.getElementById('theme-toggle-btn');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', toggleTheme);
+    }
+
     loadComponents();
     initTabs();
     populateCities();

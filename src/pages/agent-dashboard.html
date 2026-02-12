@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JetCongo | Tableau de bord Agent</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        display: ["Inter"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            zoom: 75%;
+        }
+    </style>
+</head>
+<body
+    class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 font-display transition-colors duration-200">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside
+            class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col hidden lg:flex">
+            <div class="p-6 flex items-center gap-3">
+                <img src="../../public/images/logo-jetcongo.svg" alt="JetCongo"
+                     class="w-10 h-10 object-contain" />
+                <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">JetCongo</span>
+            </div>
+            <nav class="flex-1 px-4 space-y-1 mt-4">
+                <a href="agent-dashboard.html"
+                    class="flex items-center gap-3 px-4 py-3 text-white bg-primary rounded-lg transition-all">
+                    <span class="material-icons text-sm">dashboard</span>
+                    <span class="font-medium text-sm">Tableau de bord</span>
+                </a>
+                <a href="agent-flights.html"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all">
+                    <span class="material-icons text-sm">event_note</span>
+                    <span class="font-medium text-sm">Vols</span>
+                </a>
+                <a href="agent-avions.html"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all">
+                    <span class="material-icons text-sm">airplanemode_active</span>
+                    <span class="font-medium text-sm">Flotte</span>
+                </a>
+                <a href="agent-utilisateurs.html"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all">
+                    <span class="material-icons text-sm">group</span>
+                    <span class="font-medium text-sm">Utilisateurs</span>
+                </a>
+                <a href="agent-reservations.html"
+                    class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all">
+                    <span class="material-icons text-sm">confirmation_number</span>
+                    <span class="font-medium text-sm">Réservations</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-slate-200 dark:border-slate-800">
+                <div class="mt-4 flex items-center gap-3 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsGZoaYxS5U6h4u7E6ubAwUxEXS_4ictB8mzf5bXeGbAwmymQGtDbm-9pdwINMFh7BcTV4923MTLbbh07CTDwNgfzyzk44bvYA7IsCmaRUwZTSHezyaaHVs4qc7P18hWNyh7Ies0frWz2gjJbEn6K2NuuqPULwkSE8J4iAK89DUYiwsj96cwZcdM-cfVcBdszribREozdYrLHxsCZm5h5E6pxkWstXsyjqjW0KCRxy6ZMzatW2VlC9LG7qw070OUMAZRu2CxviQUE"
+                        alt="Admin" class="w-8 h-8 rounded-full border border-primary/20" />
+                    <div class="overflow-hidden">
+                        <p class="text-xs font-semibold truncate dark:text-white">Agent JetCongo</p>
+                        <p class="text-[10px] text-slate-500 truncate">Administrateur système</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+            <!-- Header -->
+            <header
+                class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8">
+                <div class="relative w-96 max-w-lg">
+                    <span
+                        class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+                    <input type="text"
+                        class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg py-2 pl-10 text-sm focus:ring-2 focus:ring-primary/50 transition-all outline-none"
+                        placeholder="Rechercher un vol, un billet ou un utilisateur..." />
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="theme-toggle-btn"
+                            class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <span id="theme-toggle-icon" class="material-icons text-slate-500">dark_mode</span>
+                    </button>
+                    <button
+                        class="relative p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                        <span class="material-icons text-xl">notifications</span>
+                        <span
+                            class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
+                    </button>
+                    <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 mx-1"></div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-slate-600 dark:text-slate-300">30 derniers jours</span>
+                        <span class="material-icons text-sm text-slate-400">calendar_today</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Area -->
+            <div class="flex-1 overflow-y-auto p-8 space-y-8">
+                <!-- Welcome Section -->
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Vue d'ensemble des statistiques</h1>
+                        <p class="text-slate-500 dark:text-slate-400 mt-1">
+                            Performance globale et indicateurs de vols en temps réel.
+                        </p>
+                    </div>
+                    <button id="dashboard-export-btn"
+                        class="bg-primary text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 hover:bg-blue-600 transition-colors">
+                        <span class="material-icons text-sm">file_download</span>
+                        Exporter le rapport
+                    </button>
+                </div>
+
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Active Flights -->
+                    <div
+                        class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-shadow">
+                        <div class="flex justify-between items-start">
+                            <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                <span class="material-icons text-primary">flight</span>
+                            </div>
+                            <span
+                                class="text-xs font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full">+12%</span>
+                        </div>
+                        <div class="mt-4">
+                            <h3
+                                class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                Vols actifs</h3>
+                            <p id="stat-active-flights" class="text-3xl font-bold text-slate-900 dark:text-white mt-1">0</p>
+                        </div>
+                        <div class="mt-4 flex items-center gap-2">
+                            <div
+                                class="flex-1 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                                <div class="bg-primary h-full w-[78%]"></div>
+                            </div>
+                            <span class="text-[10px] text-slate-400 font-medium">Capacité estimée</span>
+                        </div>
+                    </div>
+
+                    <!-- Pending Reservations -->
+                    <div
+                        class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-shadow">
+                        <div class="flex justify-between items-start">
+                            <div class="p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                                <span class="material-icons text-amber-500">pending_actions</span>
+                            </div>
+                            <span
+                                class="text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-full">Action
+                                Needed</span>
+                        </div>
+                        <div class="mt-4">
+                            <h3
+                                class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                Réservations en attente</h3>
+                            <p id="stat-pending-reservations" class="text-3xl font-bold text-slate-900 dark:text-white mt-1">0</p>
+                        </div>
+                        <div class="mt-4 text-[10px] text-slate-400 italic">
+                            Demandes urgentes sur les 2 dernières heures
+                        </div>
+                    </div>
+
+                    <!-- Total Revenue -->
+                    <div
+                        class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 hover:shadow-lg transition-shadow">
+                        <div class="flex justify-between items-start">
+                            <div class="p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+                                <span class="material-icons text-emerald-500">payments</span>
+                            </div>
+                            <span
+                                class="text-xs font-bold text-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-1 rounded-full">+8.4%</span>
+                        </div>
+                        <div class="mt-4">
+                            <h3
+                                class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
+                                Revenus totaux</h3>
+                            <p id="stat-total-revenue" class="text-3xl font-bold text-slate-900 dark:text-white mt-1">$0</p>
+                        </div>
+                        <div class="mt-4 text-[10px] text-slate-400 font-medium">
+                            MTD: Jan 1 - Jan 30
+                        </div>
+                    </div>
+
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Revenue Trends Chart -->
+                    <div
+                        class="lg:col-span-1 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="font-bold text-slate-900 dark:text-white">Évolution des revenus (USD)</h3>
+                            <div class="flex gap-2">
+                                <button
+                                    class="px-3 py-1 text-xs font-medium rounded bg-primary/10 text-primary">Mensuel</button>
+                                <button
+                                    class="px-3 py-1 text-xs font-medium rounded text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">Trimestriel</button>
+                            </div>
+                        </div>
+                        <div class="h-64 flex items-end justify-between gap-4 px-4">
+                            <!-- Chart placeholder -->
+                            <div class="relative w-full h-full flex items-end">
+                                <svg class="w-full h-full" viewBox="0 0 1000 300" preserveAspectRatio="none">
+                                    <defs>
+                                        <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                                            <stop offset="5%" stop-color="#137fec" stop-opacity="0.3" />
+                                            <stop offset="95%" stop-color="#137fec" stop-opacity="0" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path
+                                        d="M0,250 Q150,150 300,200 T600,100 T1000,50 L1000,300 L0,300 Z"
+                                        fill="url(#chartGradient)"></path>
+                                    <path d="M0,250 Q150,150 300,200 T600,100 T1000,50" fill="none"
+                                        stroke="#137fec" stroke-width="4" stroke-linecap="round"></path>
+                                    <circle cx="300" cy="200" r="6" fill="#137fec"></circle>
+                                    <circle cx="600" cy="100" r="6" fill="#137fec"></circle>
+                                </svg>
+                                <div class="absolute inset-0 grid grid-cols-12 pointer-events-none">
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div class="border-r border-slate-100 dark:border-slate-800/50"></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 mt-4 px-4">
+                            <span class="text-[10px] text-slate-400 text-center">Janv.</span>
+                            <span class="text-[10px] text-slate-400 text-center">Févr.</span>
+                            <span class="text-[10px] text-slate-400 text-center">Mars</span>
+                            <span class="text-[10px] text-slate-400 text-center">Avr.</span>
+                            <span class="text-[10px] text-slate-400 text-center">Mai</span>
+                            <span class="text-[10px] text-slate-400 text-center">Juin</span>
+                            <span class="text-[10px] text-slate-400 text-center">Juil.</span>
+                            <span class="text-[10px] text-slate-400 text-center">Août</span>
+                            <span class="text-[10px] text-slate-400 text-center">Sept.</span>
+                            <span class="text-[10px] text-slate-400 text-center">Oct.</span>
+                            <span class="text-[10px] text-slate-400 text-center">Nov.</span>
+                            <span class="text-[10px] text-slate-400 text-center">Déc.</span>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Bookings -->
+                    <div
+                        class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="font-bold text-slate-900 dark:text-white">Réservations hebdomadaires</h3>
+                            <span class="material-icons text-slate-400 text-sm">more_horiz</span>
+                        </div>
+                        <div class="h-64 flex items-end justify-between gap-2">
+                            <!-- 7 bars -->
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-sm h-32 relative group">
+                                    <div
+                                        class="absolute bottom-0 w-full bg-primary/40 h-2/3 transition-all group-hover:bg-primary/60">
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium" data-weekday-label="Mon">Lun</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-sm h-32 relative group">
+                                    <div data-weekday-bar="Tue"
+                                        class="absolute bottom-0 w-full bg-primary/40 h-1/2 transition-all group-hover:bg-primary/60">
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium" data-weekday-label="Tue">Mar</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-sm h-32 relative group">
+                                    <div
+                                        class="absolute bottom-0 w-full bg-primary h-4/5 transition-all group-hover:bg-primary/80">
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium" data-weekday-label="Wed">Mer</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-sm h-32 relative group">
+                                    <div
+                                        class="absolute bottom-0 w-full bg-primary/40 h-1/3 transition-all group-hover:bg-primary/60">
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium" data-weekday-label="Thu">Jeu</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-sm h-32 relative group">
+                                    <div
+                                        class="absolute bottom-0 w-full bg-primary/40 h-3/4 transition-all group-hover:bg-primary/60">
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium" data-weekday-label="Fri">Ven</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-sm h-32 relative group">
+                                    <div
+                                        class="absolute bottom-0 w-full bg-primary/40 h-5/6 transition-all group-hover:bg-primary/60">
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium" data-weekday-label="Sat">Sam</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 w-full">
+                                <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-t-sm h-32 relative group">
+                                    <div
+                                        class="absolute bottom-0 w-full bg-primary/40 h-1/4 transition-all group-hover:bg-primary/60">
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-400 font-medium" data-weekday-label="Sun">Dim</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
+                            <div class="flex justify-between items-center">
+                            <span class="text-xs text-slate-500 font-medium">Réservations moyennes</span>
+                            <span class="text-xs font-bold text-slate-900 dark:text-white">248/jour</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Réservations récentes -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div
+                        class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                        <div
+                            class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                            <h3 class="font-bold text-slate-900 dark:text-white">Réservations récentes</h3>
+                            <button class="text-primary text-xs font-semibold hover:underline">Tout voir</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="bg-slate-50 dark:bg-slate-800/50">
+                                    <tr>
+                                        <th
+                                            class="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                            Passager</th>
+                                        <th
+                                            class="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                            Vol</th>
+                                        <th
+                                            class="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                            Statut</th>
+                                        <th
+                                            class="px-6 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider text-right">
+                                            Montant</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-reservations-body"
+                                    class="divide-y divide-slate-100 dark:divide-slate-800">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+<!-- Librairies d'export (Excel + PDF) -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script src="../js/scripts.js"></script>
+<script src="../js/agent-dashboard.js"></script>
+</html>
+
