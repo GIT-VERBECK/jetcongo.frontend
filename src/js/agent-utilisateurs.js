@@ -182,7 +182,7 @@
         const payload = {
             nom: nameInput.value.trim(),
             email: emailInput.value.trim(),
-            password: "TempPass123!", // mot de passe temporaire pour la création; l'utilisateur pourra le changer
+            password: "Jetcongo@2026", // mot de passe temporaire pour la création; l'utilisateur pourra le changer
             role: roleInput.value,
         };
         const id = idInput.value;
