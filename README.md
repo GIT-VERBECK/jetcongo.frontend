@@ -33,3 +33,8 @@
 git checkout -b nom_de_la_branche
 
 ```
+## commande pour lancer le serveur backend 
+
+```bash 
+uvicorn app.main:app --host 0.0.0.0 --port 8001
+```
