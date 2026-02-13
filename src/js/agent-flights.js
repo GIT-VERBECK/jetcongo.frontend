@@ -159,9 +159,9 @@
                         </div>
                         <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full">
                             <div class="bg-primary h-1.5 rounded-full" style="width: ${Math.min(
-                                100,
-                                Math.max(0, loadFactor)
-                            )}%"></div>
+                100,
+                Math.max(0, loadFactor)
+            )}%"></div>
                         </div>
                     </div>
                 </td>
@@ -170,11 +170,10 @@
                 </td>
                 <td class="px-6 py-4 align-top">
                     <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide
-                        ${
-                            mapStatusToLabel(f.status) === "Annulé"
-                                ? "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
-                                : "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-                        }">
+                        ${mapStatusToLabel(f.status) === "Annulé"
+                    ? "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400"
+                    : "bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                }">
                         ${mapStatusToLabel(f.status)}
                     </span>
                 </td>
@@ -268,6 +267,13 @@
             const res = await fetch(`${API_BASE_URL}/admin/flights/summary`, {
                 headers: authHeaders,
             });
+
+            if (res.status === 401) {
+                localStorage.removeItem("jetcongo_token");
+                window.location.href = "login.html";
+                return;
+            }
+
             if (!res.ok) return;
 
             const data = await res.json();
@@ -295,6 +301,12 @@
                     headers: authHeaders,
                 }
             );
+
+            if (res.status === 401) {
+                localStorage.removeItem("jetcongo_token");
+                window.location.href = "login.html";
+                return;
+            }
 
             if (!res.ok) {
                 console.error("Erreur de chargement des vols", await res.text());
@@ -374,8 +386,8 @@
             typeof flight.load_factor === "number"
                 ? flight.load_factor
                 : capacity > 0
-                ? (seatsBooked / capacity) * 100
-                : 0;
+                    ? (seatsBooked / capacity) * 100
+                    : 0;
 
         flightModalTitle.textContent = `Détails du vol ${flightCode}`;
         flightModalBody.innerHTML = `
@@ -465,8 +477,8 @@
                 typeof f.load_factor === "number"
                     ? f.load_factor
                     : capacity > 0
-                    ? (seatsBooked / capacity) * 100
-                    : 0;
+                        ? (seatsBooked / capacity) * 100
+                        : 0;
 
             return {
                 "Code vol": f.flight_code || `JC-${String(f.id || 0).padStart(3, "0")}`,
@@ -532,8 +544,8 @@
                 typeof f.load_factor === "number"
                     ? f.load_factor
                     : capacity > 0
-                    ? (seatsBooked / capacity) * 100
-                    : 0;
+                        ? (seatsBooked / capacity) * 100
+                        : 0;
 
             return [
                 f.flight_code || `JC-${String(f.id || 0).padStart(3, "0")}`,

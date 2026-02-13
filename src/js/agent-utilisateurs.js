@@ -67,6 +67,13 @@
                 `${API_BASE_URL}/admin/users?${params.toString()}`,
                 { headers }
             );
+
+            if (res.status === 401) {
+                localStorage.removeItem("jetcongo_token");
+                window.location.href = "login.html";
+                return;
+            }
+
             if (!res.ok) {
                 throw new Error(`Erreur ${res.status}`);
             }
@@ -189,11 +196,11 @@
         try {
             const body = isEdit
                 ? JSON.stringify({
-                      nom: payload.nom,
-                      email: payload.email,
-                      role: roleInput.value,
-                      status: statusInput.value || null,
-                  })
+                    nom: payload.nom,
+                    email: payload.email,
+                    role: roleInput.value,
+                    status: statusInput.value || null,
+                })
                 : JSON.stringify(payload);
 
             const res = await fetch(url, {
@@ -253,7 +260,7 @@
             if (typeof showNotification === "function") {
                 showNotification(
                     e.message ||
-                        "Impossible de supprimer l'utilisateur (probablement lié à des réservations).",
+                    "Impossible de supprimer l'utilisateur (probablement lié à des réservations).",
                     "error"
                 );
             }
@@ -415,5 +422,5 @@
 
     // Init
     loadUsers();
-})(); 
+})();
 

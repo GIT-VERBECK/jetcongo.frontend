@@ -14,7 +14,7 @@
     let recentReservations = [];
 
     try {
-        const [overviewRes, weeklyRes, recentRes] = await Promise.all([
+        const responses = await Promise.all([
             fetch(`${API_BASE_URL}/admin/stats/overview`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -31,6 +31,16 @@
                 },
             }),
         ]);
+
+        // Check for 401 Unauthorized in any response
+        if (responses.some(r => r.status === 401)) {
+            console.warn("Session expired or unauthorized. Redirecting to login.");
+            localStorage.removeItem("jetcongo_token");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const [overviewRes, weeklyRes, recentRes] = responses;
 
         if (overviewRes.ok) {
             overviewData = await overviewRes.json();
@@ -93,23 +103,21 @@
                             ${r.flight_code || "-"}
                         </td>
                         <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${
-                                (r.status || "").toUpperCase() === "PAYE"
-                                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-                                    : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
-                            }">
-                                ${
-                                    (r.status || "").toUpperCase() === "PAYE"
-                                        ? "Confirmée"
-                                        : "En attente"
-                                }
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${(r.status || "").toUpperCase() === "PAYE"
+                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                            : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+                        }">
+                                ${(r.status || "").toUpperCase() === "PAYE"
+                            ? "Confirmée"
+                            : "En attente"
+                        }
                             </span>
                         </td>
                         <td class="px-6 py-4 text-sm font-bold text-right dark:text-slate-200">
                             ${new Intl.NumberFormat("fr-FR", {
-                                style: "currency",
-                                currency: "USD",
-                            }).format(r.amount || 0)}
+                            style: "currency",
+                            currency: "USD",
+                        }).format(r.amount || 0)}
                         </td>
                     `;
                     tbody.appendChild(tr);

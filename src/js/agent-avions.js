@@ -73,6 +73,13 @@
             const res = await fetch(`${API_BASE_URL}/admin/aircrafts`, {
                 headers,
             });
+
+            if (res.status === 401) {
+                localStorage.removeItem("jetcongo_token");
+                window.location.href = "login.html";
+                return;
+            }
+
             if (!res.ok) {
                 throw new Error(`Erreur ${res.status}`);
             }
@@ -255,7 +262,7 @@
             if (typeof showNotification === "function") {
                 showNotification(
                     e.message ||
-                        "Impossible de supprimer cet avion (peut-être lié à des vols existants).",
+                    "Impossible de supprimer cet avion (peut-être lié à des vols existants).",
                     "error"
                 );
             }
@@ -394,5 +401,5 @@
             );
         }
     });
-})(); 
+})();
 

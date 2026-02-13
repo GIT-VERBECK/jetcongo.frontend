@@ -107,7 +107,36 @@ async function loadComponents() {
             if (headerContainer) {
                 headerContainer.innerHTML = await headerRes.text();
                 updateAuthUI(); // Update UI based on login status
+
+                // ATTACH THEME TOGGLE LISTENER AFTER HEADER IS LOADED
+                const themeToggleBtn = document.getElementById('theme-toggle-btn');
+                if (themeToggleBtn) {
+                    themeToggleBtn.addEventListener('click', toggleTheme);
+                }
+
+                // ATTACH HAMBURGER LISTENER
+                const hamburgerBtn = document.getElementById('hamburger-btn');
+                const navLinks = document.getElementById('nav-links');
+
+                if (hamburgerBtn && navLinks) {
+                    hamburgerBtn.addEventListener('click', () => {
+                        navLinks.classList.toggle('active');
+                        // Change icon?
+                        const icon = hamburgerBtn.querySelector('i');
+                        if (icon) {
+                            if (navLinks.classList.contains('active')) {
+                                icon.classList.replace('fa-bars', 'fa-times');
+                            } else {
+                                icon.classList.replace('fa-times', 'fa-bars');
+                            }
+                        }
+                    });
+                }
+            } else {
+                console.error("Header Container not found in DOM");
             }
+        } else {
+            console.error("Failed to fetch header.html", headerRes.status, headerRes.statusText);
         }
 
         if (footerRes.ok) {
@@ -115,7 +144,7 @@ async function loadComponents() {
             if (footerContainer) footerContainer.innerHTML = await footerRes.text();
         }
     } catch (e) {
-        console.error("Error loading components", e);
+        console.error("Error loading components (Header/Footer)", e);
     }
 }
 
@@ -372,28 +401,68 @@ async function redirectAfterLogin(token) {
 }
 
 // UI: Update Header based on Auth status
+// UI: Update Header based on Auth status
 function updateAuthUI() {
     const token = localStorage.getItem('jetcongo_token');
+
+    // Desktop Container
     const authContainer = document.querySelector('.nav-auth');
+    // Mobile Container
+    const mobileContainer = document.getElementById('mobile-auth-container');
 
-    if (token && authContainer) {
-        authContainer.innerHTML = `
-            <a href="profile.html" class="btn-login" style="display:flex;align-items:center;gap:8px;">
-                <img id="nav-avatar" src="../../public/user.png" alt="Profil utilisateur" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
-                <span>Mon compte</span>
-            </a>
-            <a href="#" class="btn-login" onclick="logout()">Déconnexion</a>
-        `;
+    if (token) {
+        // --- LOGGED IN --- //
 
-        // Tente de charger l'avatar utilisateur pour le header
+        // Desktop View
+        if (authContainer) {
+            authContainer.innerHTML = `
+                <a href="profile.html" class="btn-login" style="display:flex;align-items:center;gap:8px;">
+                    <img id="nav-avatar" src="../../public/user.png" alt="Profil utilisateur" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+                    <span>Mon compte</span>
+                </a>
+                <a href="#" class="btn-login" onclick="logout(event)">Déconnexion</a>
+            `;
+        }
+
+        // Mobile View
+        if (mobileContainer) {
+            mobileContainer.innerHTML = `
+                 <a href="profile.html" class="auth-icon-link" aria-label="Mon compte">
+                    <img id="mobile-nav-avatar" src="../../public/user.png" alt="Profil" style="height:32px;width:32px;border-radius:50%;object-fit:cover;border:1px solid var(--text-muted);">
+                 </a>
+                 <a href="#" class="auth-icon-link" onclick="logout(event)" aria-label="Déconnexion">
+                    <i class="fas fa-sign-out-alt"></i>
+                 </a>
+            `;
+        }
+
+        // Load avatar image for both
         loadHeaderAvatar();
+
+    } else {
+        // --- NOT LOGGED IN --- //
+
+        // Desktop View (Default is already correct in HTML, but we can reset if needed, 
+        // useful if user logs out without reload)
+        if (authContainer) {
+            authContainer.innerHTML = `
+                <a href="login.html" class="btn-login">Connexion</a>
+                <a href="register.html" class="btn-signup">S'inscrire</a>
+            `;
+        }
+
+        // Mobile View
+        if (mobileContainer) {
+            mobileContainer.innerHTML = `
+                <a href="login.html" class="auth-icon-link" aria-label="Connexion">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+            `;
+        }
     }
 }
 
 async function loadHeaderAvatar() {
-    const img = document.getElementById('nav-avatar');
-    if (!img) return;
-
     const token = localStorage.getItem('jetcongo_token');
     if (!token) return;
 
@@ -404,32 +473,65 @@ async function loadHeaderAvatar() {
             },
         });
 
-        if (!response.ok) {
-            // 404 ou autre -> garder l'avatar par défaut
-            return;
-        }
+        if (!response.ok) return;
 
         const blob = await response.blob();
         const objectUrl = URL.createObjectURL(blob);
-        img.src = objectUrl;
+
+        // Update Desktop Avatar
+        const imgDesktop = document.getElementById('nav-avatar');
+        if (imgDesktop) imgDesktop.src = objectUrl;
+
+        // Update Mobile Avatar
+        const imgMobile = document.getElementById('mobile-nav-avatar');
+        if (imgMobile) imgMobile.src = objectUrl;
+
     } catch (e) {
-        console.error('Erreur lors du chargement de lavatar nav', e);
+        console.error('Erreur lors du chargement de l\'avatar nav', e);
     }
 }
 
-function logout() {
+function logout(event) {
+    if (event) event.preventDefault();
     localStorage.removeItem('jetcongo_token');
-    window.location.reload();
+    window.location.href = 'index.html'; // Redirect to home on logout
 }
 
 // Page Initialization
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
 
-    const themeToggleBtn = document.getElementById('theme-toggle-btn');
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', toggleTheme);
+    // Attach theme toggle listener for pages with static headers (like agent pages)
+    const staticThemeToggleBtn = document.getElementById('theme-toggle-btn');
+    if (staticThemeToggleBtn) {
+        staticThemeToggleBtn.addEventListener('click', toggleTheme);
     }
+
+    // Agent Sidebar Toggle Logic
+    const sidebar = document.getElementById('agent-sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+    const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+
+    function openSidebar() {
+        if (sidebar && sidebarOverlay) {
+            sidebar.classList.remove('-translate-x-full');
+            sidebarOverlay.classList.remove('hidden');
+            setTimeout(() => sidebarOverlay.classList.remove('opacity-0'), 10); // Fade in
+        }
+    }
+
+    function closeSidebar() {
+        if (sidebar && sidebarOverlay) {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('opacity-0');
+            setTimeout(() => sidebarOverlay.classList.add('hidden'), 300); // Wait for fade out
+        }
+    }
+
+    if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', openSidebar);
+    if (sidebarCloseBtn) sidebarCloseBtn.addEventListener('click', closeSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
 
     loadComponents();
     initTabs();

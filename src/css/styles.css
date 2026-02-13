@@ -12,6 +12,17 @@
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
+/* Dark Mode Variables */
+html.dark {
+    --primary-color: #1a73e8;
+    --primary-hover: #1557b0;
+    --background-light: #0f1419;
+    --text-dark: #e8eaed;
+    --text-muted: #9aa0a6;
+    --white: #1f2937;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -34,9 +45,15 @@ header {
     background: var(--white);
     border-bottom: 1px solid #e0e0e0;
     padding: 1rem 5%;
-    position: sticky; /* reste collé en haut uniquement au scroll */
+    position: sticky;
+    /* reste collé en haut uniquement au scroll */
     top: 0;
     z-index: 1000;
+}
+
+html.dark header {
+    background: var(--white);
+    border-bottom-color: #374151;
 }
 
 input[type="password"]::-ms-reveal,
@@ -99,6 +116,22 @@ nav {
 
 .btn-signup:hover {
     background: var(--primary-hover);
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+/* Mobile Menu Transition */
+.nav-links {
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 /* Hero Section */
@@ -568,8 +601,8 @@ select.is-invalid {
     border-color: #f97316;
 }
 
-input.is-invalid + .field-error,
-select.is-invalid + .field-error {
+input.is-invalid+.field-error,
+select.is-invalid+.field-error {
     display: block;
 }
 
@@ -631,11 +664,15 @@ footer {
 }
 
 .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    display: flex;
+    flex-direction: row;
     gap: 3rem;
     max-width: 1400px;
     margin: 0 auto;
+}
+
+.footer-col {
+    flex: 1;
 }
 
 .footer-col h4 {
@@ -651,36 +688,50 @@ footer {
     margin-bottom: 0.8rem;
 }
 
-.footer-col ul li a {
+.footer-description {
+    color: var(--white);
+    opacity: 0.8;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.footer-title {
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.footer-link {
+    color: var(--white);
+    opacity: 0.7;
     text-decoration: none;
-    color: var(--text-muted);
-    transition: color 0.2s;
+    transition: opacity 0.2s;
 }
 
-.footer-col ul li a:hover {
-    color: var(--primary-color);
+.footer-link:hover {
+    opacity: 1;
 }
 
-.social-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.social-links a {
-    color: var(--text-muted);
+.social-link {
+    color: var(--white);
     font-size: 1.2rem;
 }
 
-.footer-bottom {
-    margin-top: 5rem;
-    padding-top: 2rem;
-    border-top: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--text-muted);
+.contact-list {
+    color: var(--white);
+    opacity: 0.8;
     font-size: 0.9rem;
+}
+
+.contact-item {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-icon {
+    color: var(--primary-color);
+    flex-shrink: 0;
 }
 
 .payment-icons {
@@ -739,7 +790,8 @@ footer {
     }
 
     .footer-grid {
-        grid-template-columns: 1fr 1fr;
+        flex-direction: column;
+        gap: 2rem;
     }
 
     .hero h1 {
@@ -747,17 +799,89 @@ footer {
     }
 }
 
-@media (max-width: 600px) {
-    .search-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 900px) {
+    .nav-links {
+        display: none;
+        /* Hidden by default */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--white);
+        flex-direction: column;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        gap: 1.5rem;
+        text-align: center;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    /* Dark mode adjustments for mobile menu */
+    html.dark .nav-links {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+
+    .hamburger {
+        display: block !important;
+        /* Force override */
+        z-index: 1001;
+        /* Above nav links */
     }
 
     .nav-links {
         display: none;
     }
 
-    .footer-grid {
+    .nav-links.active {
+        display: flex !important;
+    }
+
+    .nav-auth {
+        display: none;
+        /* Hide auth buttons on mobile for simplicity, or move them inside menu */
+    }
+
+    .mobile-auth {
+        display: flex !important;
+        align-items: center;
+        gap: 15px;
+    }
+
+    /* Adjust header layout */
+    /* Adjust header layout */
+    nav {
+        justify-content: space-between;
+        position: relative;
+    }
+}
+
+/* Auth Icons */
+.mobile-auth {
+    display: none;
+    /* Hidden on desktop */
+}
+
+.auth-icon-link {
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.auth-icon-link:hover {
+    color: var(--primary-color);
+}
+
+@media (max-width: 600px) {
+    .search-grid {
         grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        flex-direction: column;
+        gap: 2rem;
     }
 }
 
@@ -933,4 +1057,384 @@ footer {
     font-size: 0.8rem;
     margin-top: 0.3rem;
     display: none;
+}
+
+/* ===== DARK MODE STYLES ===== */
+html.dark body {
+    background-color: var(--background-light);
+    color: var(--text-dark);
+}
+
+html.dark .nav-links a {
+    color: var(--text-dark);
+}
+
+html.dark .nav-links a:hover {
+    color: var(--primary-color);
+}
+
+html.dark .btn-login {
+    color: var(--text-light);
+}
+
+html.dark .search-card {
+    background: var(--white);
+    color: var(--text-dark);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .input-field {
+    background: var(--white);
+    border-color: #374151;
+    color: var(--text-dark);
+}
+
+html.dark .input-field:focus {
+    border-color: var(--primary-color);
+    background: var(--white);
+}
+
+html.dark select.input-field {
+    /* Keep light mode colors */
+    color: var(--text-dark);
+    background: var(--white);
+    border-color: #d1d5db;
+}
+
+html.dark select.input-field:focus {
+    border-color: var(--primary-color);
+    background: var(--white);
+}
+
+html.dark .tab {
+    color: var(--text-muted);
+}
+
+html.dark .tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+html.dark .card {
+    background: var(--white);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    border-color: #374151;
+}
+
+html.dark .card-body h3 {
+    color: var(--text-dark);
+}
+
+html.dark .card-body p {
+    color: var(--text-muted);
+}
+
+html.dark .btn-card {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+html.dark .btn-card:hover {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+html.dark .flight-card {
+    background: var(--white);
+    border-color: #374151;
+    color: var(--text-dark);
+}
+
+html.dark .flight-main-info h5 {
+    color: var(--text-dark);
+}
+
+html.dark .flight-airline-icon {
+    background: #1f2937;
+    color: #1a73e8;
+}
+
+html.dark .flight-datetime {
+    color: var(--text-muted);
+}
+
+html.dark .flight-price-block .h4 {
+    color: var(--text-dark);
+}
+
+html.dark .flight-price-block small {
+    color: var(--text-muted);
+}
+
+html.dark .reservation-page {
+    background-color: var(--background-light);
+}
+
+html.dark .reservation-card {
+    background: var(--white);
+    color: var(--text-dark);
+}
+
+html.dark .reservation-back {
+    background: #374151;
+    color: var(--text-dark);
+}
+
+html.dark .reservation-header-label {
+    color: #9aa0a6;
+}
+
+html.dark .reservation-title {
+    color: var(--text-dark);
+}
+
+html.dark .reservation-subtitle {
+    color: var(--text-muted);
+}
+
+html.dark .reservation-form-section {
+    background: var(--white);
+    border-color: #374151;
+    color: var(--text-dark);
+}
+
+html.dark .section-header h2 {
+    color: var(--text-dark);
+}
+
+html.dark .section-header p {
+    color: var(--text-muted);
+}
+
+html.dark .view-all {
+    color: var(--primary-color);
+}
+
+html.dark .view-all:hover {
+    opacity: 0.8;
+}
+
+/* Theme Toggle Icon */
+.theme-icon {
+    color: #64748b !important;
+    transition: color 0.3s ease;
+}
+
+html.dark .theme-icon {
+    color: #e8eaed !important;
+}
+
+/* ===== NEWSLETTER SECTION ===== */
+html.dark .newsletter {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    color: var(--text-dark);
+}
+
+html.dark .newsletter h2 {
+    color: var(--text-dark);
+}
+
+html.dark .newsletter p {
+    color: var(--text-muted);
+}
+
+html.dark .newsletter-form input {
+    background: var(--white);
+    border-color: #374151;
+    color: var(--text-dark);
+}
+
+html.dark .newsletter-form input::placeholder {
+    color: #9ca3af;
+}
+
+html.dark .newsletter-form input:focus {
+    border-color: var(--primary-color);
+    background: var(--white);
+}
+
+html.dark .newsletter-form .btn-signup {
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+}
+
+html.dark .newsletter-form .btn-signup:hover {
+    background: var(--primary-hover);
+}
+
+html.dark .input-group {
+    color: var(--text-dark);
+}
+
+html.dark .input-group label {
+    color: var(--text-muted);
+}
+
+/* ===== BOOTSTRAP OVERRIDES FOR FLIGHTS PAGE ===== */
+html.dark .form-label {
+    color: var(--text-dark);
+}
+
+html.dark .form-select {
+    /* Keep light mode appearance */
+    background-color: #ffffff;
+    border-color: #d1d5db;
+    color: #374151;
+}
+
+html.dark .form-select:focus {
+    /* Keep light mode focus appearance */
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.5);
+    background-color: #ffffff;
+    color: #374151;
+}
+
+html.dark .form-control {
+    background-color: var(--white);
+    border-color: #374151;
+    color: var(--text-dark);
+}
+
+html.dark .form-control:focus {
+    border-color: var(--primary-color);
+    background-color: var(--white);
+    color: var(--text-dark);
+    box-shadow: 0 0 0 0.25rem rgba(26, 115, 232, 0.25);
+}
+
+html.dark .card {
+    background-color: var(--white);
+    border-color: #374151;
+}
+
+html.dark .card-body {
+    color: var(--text-dark);
+}
+
+html.dark .card-title {
+    color: var(--text-dark);
+}
+
+html.dark .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+html.dark .btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+html.dark .btn-outline-secondary {
+    color: var(--text-dark);
+    border-color: #374151;
+}
+
+html.dark .btn-outline-secondary:hover {
+    background-color: #374151;
+    border-color: #374151;
+    color: var(--text-dark);
+}
+
+html.dark .text-muted {
+    color: var(--text-muted) !important;
+}
+
+html.dark .alert {
+    border-color: #374151;
+    color: var(--text-dark);
+}
+
+html.dark .alert-danger {
+    background-color: #7f1d1d;
+    border-color: #c7252f;
+    color: #fecaca;
+}
+
+html.dark main {
+    background-color: var(--background-light) !important;
+}
+
+html.dark .container-fluid {
+    color: var(--text-dark);
+}
+
+html.dark h3 {
+    color: var(--text-dark);
+}
+
+html.dark .card {
+    background-color: var(--white) !important;
+    border-color: #374151 !important;
+    color: var(--text-dark);
+}
+
+html.dark .card-title {
+    color: var(--text-dark);
+}
+
+html.dark .card-body {
+    color: var(--text-dark);
+}
+
+html.dark .card-header {
+    background-color: #f3f4f6 !important;
+    border-bottom-color: #374151 !important;
+    color: var(--text-dark);
+}
+
+html.dark .card-text {
+    color: var(--text-dark);
+}
+
+html.dark .input-icon {
+    color: var(--text-muted);
+}
+
+html.dark .success-text {
+    color: #10b981;
+}
+
+html.dark .primary-text {
+    color: var(--primary-color);
+}
+
+/* Additional styles for better dark mode support */
+html.dark option {
+    background-color: var(--white);
+    color: var(--text-dark);
+}
+
+html.dark select option {
+    /* Keep light mode option appearance */
+    background-color: #ffffff;
+    color: #374151;
+}
+
+html.dark select option:checked {
+    /* Keep light mode selected option appearance */
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+html.dark .btn-search {
+    background: var(--primary-color);
+    border: none;
+}
+
+html.dark .btn-search:hover {
+    background: var(--primary-hover);
+}
+
+/* Dark mode footer - keep text white */
+html.dark footer,
+html.dark footer * {
+    color: #ffffff !important;
+}
+
+/* Dark mode hero section */
+html.dark .hero p {
+    color: var(--text-light);
 }

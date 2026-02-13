@@ -26,6 +26,13 @@
             const res = await fetch(`${API_BASE_URL}/admin/reservations`, {
                 headers,
             });
+
+            if (res.status === 401) {
+                localStorage.removeItem("jetcongo_token");
+                window.location.href = "login.html";
+                return;
+            }
+
             if (!res.ok) {
                 throw new Error(`Erreur ${res.status}`);
             }
@@ -139,13 +146,12 @@
                     </td>
                     <td class="px-6 py-4">
                         <span class="${badgeClass}">
-                            <span class="w-1.5 h-1.5 rounded-full ${
-                                status === "ANNULEE"
-                                    ? "bg-red-500"
-                                    : status === "CONFIRMEE" || status === "PAYE"
-                                    ? "bg-green-500"
-                                    : "bg-amber-500"
-                            }"></span>
+                            <span class="w-1.5 h-1.5 rounded-full ${status === "ANNULEE"
+                        ? "bg-red-500"
+                        : status === "CONFIRMEE" || status === "PAYE"
+                            ? "bg-green-500"
+                            : "bg-amber-500"
+                    }"></span>
                             ${label}
                         </span>
                     </td>
@@ -368,5 +374,5 @@
     }
 
     loadReservations();
-})(); 
+})();
 

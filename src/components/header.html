@@ -5,22 +5,40 @@
                 <img src="../../public/logo_sans_bg.png" alt="JetCongo Logo" style="height: 50px; width: auto;">
             </a>
         </div>
-        <ul class="nav-links">
+
+        <ul class="nav-links" id="nav-links">
             <li><a href="index.html">Accueil</a></li>
             <li><a href="flights.html">Vols</a></li>
-            <li><a href="booking.html">Enregistrement</a></li>
+            <li><a href="booking.html" class="active">Enregistrement</a></li>
             <li><a href="booking.html">Mes réservations</a></li>
             <li><a href="index.html">Aide</a></li>
         </ul>
+
         <div style="display:flex;align-items:center;gap:16px;">
-            <button id="theme-toggle-btn"
+            <div style="display:flex;align-items:center;gap:16px;">
+                <button id="theme-toggle-btn"
                     style="border:none;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:6px;border-radius:9999px;">
-                <span id="theme-toggle-icon" class="material-icons-outlined" style="color:#64748b;">dark_mode</span>
-            </button>
-            <div class="nav-auth">
-            <a href="login.html" class="btn-login">Connexion</a>
-            <a href="register.html" class="btn-signup">S'inscrire</a>
+                    <span id="theme-toggle-icon" class="material-icons-outlined theme-icon">dark_mode</span>
+                </button>
+
+                <!-- Mobile Auth Icons (Visible only on mobile) -->
+                <div id="mobile-auth-container" class="mobile-auth">
+                    <a href="login.html" class="auth-icon-link" aria-label="Connexion">
+                        <i class="fas fa-user-circle"></i>
+                    </a>
+                </div>
+
+                <!-- Desktop Auth Buttons (Hidden on mobile) -->
+                <div class="nav-auth">
+                    <a href="login.html" class="btn-login">Connexion</a>
+                    <a href="register.html" class="btn-signup">S'inscrire</a>
+                </div>
+            </div>
         </div>
-        </div>
+
+        <!-- Hamburger Menu for Mobile (Moved to end for right alignment) -->
+        <button id="hamburger-btn" class="hamburger" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
     </nav>
 </header>

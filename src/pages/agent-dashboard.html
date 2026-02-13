@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html class="light" lang="fr">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,10 +8,11 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-          rel="stylesheet" />
+        rel="stylesheet" />
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -42,16 +44,27 @@
         }
     </style>
 </head>
+
 <body
     class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 font-display transition-colors duration-200">
-    <div class="flex min-h-screen">
+    <!-- Mobile Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity opacity-0">
+    </div>
+
+    <div class="flex min-h-screen relative">
         <!-- Sidebar -->
-        <aside
-            class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col hidden lg:flex">
-            <div class="p-6 flex items-center gap-3">
-                <img src="../../public/images/logo-jetcongo.svg" alt="JetCongo"
-                     class="w-10 h-10 object-contain" />
-                <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">JetCongo</span>
+        <aside id="agent-sidebar"
+            class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 lg:static lg:flex transition-transform duration-300 ease-in-out">
+            <div class="p-6 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <img src="../public/logo-jetcongo.svg" alt="JetCongo" class="w-10 h-10 object-contain" />
+                    <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">JetCongo</span>
+                </div>
+                <!-- Close button for mobile -->
+                <button id="sidebar-close-btn"
+                    class="lg:hidden text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <span class="material-icons">close</span>
+                </button>
             </div>
             <nav class="flex-1 px-4 space-y-1 mt-4">
                 <a href="agent-dashboard.html"
@@ -81,14 +94,11 @@
                 </a>
             </nav>
             <div class="p-4 border-t border-slate-200 dark:border-slate-800">
-                <div class="mt-4 flex items-center gap-3 px-4 py-2 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsGZoaYxS5U6h4u7E6ubAwUxEXS_4ictB8mzf5bXeGbAwmymQGtDbm-9pdwINMFh7BcTV4923MTLbbh07CTDwNgfzyzk44bvYA7IsCmaRUwZTSHezyaaHVs4qc7P18hWNyh7Ies0frWz2gjJbEn6K2NuuqPULwkSE8J4iAK89DUYiwsj96cwZcdM-cfVcBdszribREozdYrLHxsCZm5h5E6pxkWstXsyjqjW0KCRxy6ZMzatW2VlC9LG7qw070OUMAZRu2CxviQUE"
-                        alt="Admin" class="w-8 h-8 rounded-full border border-primary/20" />
-                    <div class="overflow-hidden">
-                        <p class="text-xs font-semibold truncate dark:text-white">Agent JetCongo</p>
-                        <p class="text-[10px] text-slate-500 truncate">Administrateur système</p>
-                    </div>
-                </div>
+                <button id="agent-logout-btn"
+                    class="flex items-center gap-3 px-4 py-3 w-full text-left text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-colors">
+                    <span class="material-icons text-xl">logout</span>
+                    <span class="font-medium text-sm">Déconnexion</span>
+                </button>
             </div>
         </aside>
 
@@ -96,8 +106,15 @@
         <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
             <!-- Header -->
             <header
-                class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8">
-                <div class="relative w-96 max-w-lg">
+                class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 lg:px-8">
+
+                <!-- Hamburger Button (Mobile/Tablet) -->
+                <button id="sidebar-toggle-btn"
+                    class="lg:hidden p-2 -ml-2 mr-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+                    <span class="material-icons">menu</span>
+                </button>
+
+                <div class="relative w-full max-w-lg hidden md:block">
                     <span
                         class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
                     <input type="text"
@@ -105,12 +122,10 @@
                         placeholder="Rechercher un vol, un billet ou un utilisateur..." />
                 </div>
                 <div class="flex items-center gap-4">
-                    <button id="theme-toggle-btn"
-                            class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
+                    <button id="theme-toggle-btn" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800">
                         <span id="theme-toggle-icon" class="material-icons text-slate-500">dark_mode</span>
                     </button>
-                    <button
-                        class="relative p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
+                    <button class="relative p-2 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full">
                         <span class="material-icons text-xl">notifications</span>
                         <span
                             class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white dark:ring-slate-900"></span>
@@ -128,7 +143,8 @@
                 <!-- Welcome Section -->
                 <div class="flex justify-between items-end">
                     <div>
-                        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Vue d'ensemble des statistiques</h1>
+                        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Vue d'ensemble des statistiques
+                        </h1>
                         <p class="text-slate-500 dark:text-slate-400 mt-1">
                             Performance globale et indicateurs de vols en temps réel.
                         </p>
@@ -156,11 +172,11 @@
                             <h3
                                 class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
                                 Vols actifs</h3>
-                            <p id="stat-active-flights" class="text-3xl font-bold text-slate-900 dark:text-white mt-1">0</p>
+                            <p id="stat-active-flights" class="text-3xl font-bold text-slate-900 dark:text-white mt-1">0
+                            </p>
                         </div>
                         <div class="mt-4 flex items-center gap-2">
-                            <div
-                                class="flex-1 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                            <div class="flex-1 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                                 <div class="bg-primary h-full w-[78%]"></div>
                             </div>
                             <span class="text-[10px] text-slate-400 font-medium">Capacité estimée</span>
@@ -182,7 +198,8 @@
                             <h3
                                 class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
                                 Réservations en attente</h3>
-                            <p id="stat-pending-reservations" class="text-3xl font-bold text-slate-900 dark:text-white mt-1">0</p>
+                            <p id="stat-pending-reservations"
+                                class="text-3xl font-bold text-slate-900 dark:text-white mt-1">0</p>
                         </div>
                         <div class="mt-4 text-[10px] text-slate-400 italic">
                             Demandes urgentes sur les 2 dernières heures
@@ -203,19 +220,20 @@
                             <h3
                                 class="text-slate-500 dark:text-slate-400 text-xs font-semibold uppercase tracking-wider">
                                 Revenus totaux</h3>
-                            <p id="stat-total-revenue" class="text-3xl font-bold text-slate-900 dark:text-white mt-1">$0</p>
+                            <p id="stat-total-revenue" class="text-3xl font-bold text-slate-900 dark:text-white mt-1">$0
+                            </p>
                         </div>
                         <div class="mt-4 text-[10px] text-slate-400 font-medium">
                             MTD: Jan 1 - Jan 30
                         </div>
                     </div>
-
+                </div>
 
                 <!-- Charts Section -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 gap-6">
                     <!-- Revenue Trends Chart -->
                     <div
-                        class="lg:col-span-1 bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
+                        class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
                         <div class="flex justify-between items-center mb-8">
                             <h3 class="font-bold text-slate-900 dark:text-white">Évolution des revenus (USD)</h3>
                             <div class="flex gap-2">
@@ -235,11 +253,10 @@
                                             <stop offset="95%" stop-color="#137fec" stop-opacity="0" />
                                         </linearGradient>
                                     </defs>
-                                    <path
-                                        d="M0,250 Q150,150 300,200 T600,100 T1000,50 L1000,300 L0,300 Z"
+                                    <path d="M0,250 Q150,150 300,200 T600,100 T1000,50 L1000,300 L0,300 Z"
                                         fill="url(#chartGradient)"></path>
-                                    <path d="M0,250 Q150,150 300,200 T600,100 T1000,50" fill="none"
-                                        stroke="#137fec" stroke-width="4" stroke-linecap="round"></path>
+                                    <path d="M0,250 Q150,150 300,200 T600,100 T1000,50" fill="none" stroke="#137fec"
+                                        stroke-width="4" stroke-linecap="round"></path>
                                     <circle cx="300" cy="200" r="6" fill="#137fec"></circle>
                                     <circle cx="600" cy="100" r="6" fill="#137fec"></circle>
                                 </svg>
@@ -343,15 +360,15 @@
                         </div>
                         <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800">
                             <div class="flex justify-between items-center">
-                            <span class="text-xs text-slate-500 font-medium">Réservations moyennes</span>
-                            <span class="text-xs font-bold text-slate-900 dark:text-white">248/jour</span>
+                                <span class="text-xs text-slate-500 font-medium">Réservations moyennes</span>
+                                <span class="text-xs font-bold text-slate-900 dark:text-white">248/jour</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Réservations récentes -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 gap-6">
                     <div
                         class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
                         <div
@@ -394,5 +411,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <script src="../js/scripts.js"></script>
 <script src="../js/agent-dashboard.js"></script>
-</html>
+<script src="../js/agent-logout.js"></script>
 
+</html>
