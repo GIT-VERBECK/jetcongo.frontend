@@ -88,8 +88,7 @@
                 tbody.innerHTML = "";
                 recentReservations.forEach((r) => {
                     const tr = document.createElement("tr");
-                    tr.className =
-                        "hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors";
+                    tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-all reveal";
                     tr.innerHTML = `
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
@@ -122,6 +121,7 @@
                     `;
                     tbody.appendChild(tr);
                 });
+                if (typeof setupScrollAnimations === 'function') setupScrollAnimations();
             }
         }
     } catch (error) {

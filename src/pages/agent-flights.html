@@ -41,7 +41,6 @@
     <style>
         body {
             font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            zoom: 75%;
         }
     </style>
 </head>
@@ -57,7 +56,6 @@
             class="w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed inset-y-0 left-0 z-50 transform -translate-x-full lg:translate-x-0 lg:static lg:block transition-transform duration-300 ease-in-out">
             <div class="p-6 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-2 mb-10">
-                    <img src="../../public/logo-jetcongo.svg" alt="JetCongo" class="w-10 h-10 object-contain" />
                     <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">JetCongo</h1>
                 </div>
                 <!-- Close button for mobile -->
@@ -285,6 +283,105 @@
                 <div id="flight-modal-body" class="px-5 py-4 space-y-3 text-sm text-slate-700 dark:text-slate-200">
                     <!-- Contenu dynamique inséré par agent-flights.js -->
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal Ajout/Modification Vol -->
+        <div id="flight-form-modal"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 transition-all opacity-0">
+            <div
+                class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all">
+                <div
+                    class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+                    <h3 id="flight-form-title" class="text-lg font-bold text-slate-800 dark:text-white">Nouveau Vol</h3>
+                    <button id="flight-form-close"
+                        class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <span class="material-icons">close</span>
+                    </button>
+                </div>
+
+                <form id="flight-form" class="p-6 space-y-4">
+                    <input type="hidden" id="flight-id" name="id">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Code Vol -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Code Vol</label>
+                            <input type="text" id="flight-code" name="flight_code" placeholder="Ex: JC-123" required
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm font-medium">
+                        </div>
+
+                        <!-- Avion -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Avion</label>
+                            <select id="flight-aircraft" name="aircraft_id" required
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm">
+                                <option value="">Sélectionner un avion</option>
+                            </select>
+                        </div>
+
+                        <!-- Ville Départ -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Ville Départ</label>
+                            <input type="text" id="flight-depart" name="depart_city" placeholder="Ex: Kinshasa" required
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm">
+                        </div>
+
+                        <!-- Ville Arrivée -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Ville
+                                Arrivée</label>
+                            <input type="text" id="flight-arrivee" name="arrivee_city" placeholder="Ex: Goma" required
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm">
+                        </div>
+
+                        <!-- Date Départ -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Date Départ</label>
+                            <input type="date" id="flight-date" name="date_depart" required
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm text-slate-600 dark:text-slate-300">
+                        </div>
+
+                        <!-- Heure Départ -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Heure Départ</label>
+                            <input type="time" id="flight-time" name="heure_depart" required
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm text-slate-600 dark:text-slate-300">
+                        </div>
+
+                        <!-- Prix -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Prix (USD)</label>
+                            <input type="number" id="flight-price" name="price" min="0" step="0.01" placeholder="0.00"
+                                required
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm font-bold text-slate-900 dark:text-white">
+                        </div>
+
+                        <!-- Statut -->
+                        <div class="space-y-1">
+                            <label class="text-xs font-bold text-slate-500 uppercase tracking-wide">Statut</label>
+                            <select id="flight-status" name="status"
+                                class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border-none rounded-lg focus:ring-2 focus:ring-primary/50 text-sm">
+                                <option value="actif">Prévu / Actif</option>
+                                <option value="retarde">Retardé</option>
+                                <option value="annule">Annulé</option>
+                                <option value="termine">Terminé</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-6 border-t border-slate-100 dark:border-slate-800 mt-6">
+                        <button type="button" id="flight-form-cancel"
+                            class="px-5 py-2.5 text-slate-500 font-medium hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors">
+                            Annuler
+                        </button>
+                        <button type="submit" id="flight-form-save"
+                            class="px-5 py-2.5 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all flex items-center gap-2">
+                            <span class="material-icons text-sm">save</span>
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
 

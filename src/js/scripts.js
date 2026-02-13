@@ -1,8 +1,7 @@
-// JetCongo Global Scripts
 // URL de base de l'API FastAPI.
-// En local : backend écoutant sur le port 8001.
-// En production : remplacer par l'URL Render, par ex. 'https://jetcongo-backend.onrender.com/api/v1'.
-const API_BASE_URL = 'http://127.0.0.1:8001/api/v1';
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://127.0.0.1:8001/api/v1'
+    : 'https://jetcongo-backend.onrender.com/api/v1'; // Remplacer par votre URL Render réelle
 
 // --- Thème global (light/dark) ---
 function applyTheme(theme) {
@@ -26,9 +25,14 @@ function initTheme() {
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         const theme = saved || (prefersDark ? 'dark' : 'light');
         applyTheme(theme);
+
+        // Restore 75% zoom as requested
+        document.body.style.zoom = "75%";
+
     } catch (e) {
         // Fallback sans localStorage
         applyTheme('light');
+        document.body.style.zoom = "75%";
     }
 }
 
@@ -39,61 +43,61 @@ function toggleTheme() {
 
 // Simple système de notifications (push) réutilisable
 // type: "success" | "error" | "info"
+// Système de notifications Toast amélioré
+// type: "success" | "error" | "info" | "warning"
 function showNotification(message, type = 'info') {
     let container = document.getElementById('toast-container');
     if (!container) {
         container = document.createElement('div');
         container.id = 'toast-container';
-        container.style.position = 'fixed';
-        container.style.top = '20px';
-        container.style.right = '20px';
-        container.style.zIndex = '9999';
-        container.style.display = 'flex';
-        container.style.flexDirection = 'column';
-        container.style.gap = '10px';
         document.body.appendChild(container);
     }
 
     const toast = document.createElement('div');
-    toast.className = 'toast-notification';
-    toast.style.minWidth = '260px';
-    toast.style.padding = '12px 16px';
-    toast.style.borderRadius = '8px';
-    toast.style.color = '#fff';
-    toast.style.fontSize = '0.9rem';
-    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-    toast.style.display = 'flex';
-    toast.style.alignItems = 'center';
-    toast.style.justifyContent = 'space-between';
-    toast.style.gap = '8px';
+    toast.className = `toast-notification ${type}`;
 
-    let bg = '#1a73e8';
-    if (type === 'error') bg = '#d93025';
-    if (type === 'success') bg = '#188038';
+    // Icônes SVG inline pour ne pas dépendre de polices externes
+    let iconSvg = '';
+    if (type === 'success') {
+        iconSvg = `<svg class="toast-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+    } else if (type === 'error') {
+        iconSvg = `<svg class="toast-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+    } else if (type === 'warning') {
+        iconSvg = `<svg class="toast-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
+    } else {
+        // Info
+        iconSvg = `<svg class="toast-icon w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+    }
 
-    toast.style.backgroundColor = bg;
+    toast.innerHTML = `
+        ${iconSvg}
+        <div class="toast-content">${message}</div>
+        <button class="toast-close">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+    `;
 
-    const text = document.createElement('span');
-    text.textContent = message;
+    // Gestion de la fermeture
+    const closeBtn = toast.querySelector('.toast-close');
+    closeBtn.onclick = () => removeToast(toast);
 
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = '×';
-    closeBtn.style.border = 'none';
-    closeBtn.style.background = 'transparent';
-    closeBtn.style.color = '#fff';
-    closeBtn.style.cursor = 'pointer';
-    closeBtn.style.fontSize = '1rem';
-    closeBtn.onclick = () => container.removeChild(toast);
-
-    toast.appendChild(text);
-    toast.appendChild(closeBtn);
     container.appendChild(toast);
 
+    // Auto-suppression après 5 secondes
     setTimeout(() => {
-        if (container.contains(toast)) {
-            container.removeChild(toast);
+        removeToast(toast);
+    }, 5000);
+}
+
+function removeToast(toast) {
+    if (!toast) return;
+    // Animation de sortie
+    toast.style.animation = 'toast-out 0.3s ease-in forwards';
+    toast.addEventListener('animationend', () => {
+        if (toast.parentElement) {
+            toast.parentElement.removeChild(toast);
         }
-    }, 4000);
+    });
 }
 
 // Function to load external components (Header/Footer)
@@ -193,31 +197,45 @@ function populateCities() {
 
     if (!departureSelect || !arrivalSelect) return;
 
-    // Reset des menus (garde l'option par défaut)
     departureSelect.innerHTML = '<option value="" disabled selected>Sélectionnez une ville...</option>';
     arrivalSelect.innerHTML = '<option value="" disabled selected>Sélectionnez une ville...</option>';
 
-    // Tri alphabétique des villes
     cities.sort((a, b) => a.name.localeCompare(b.name));
 
     cities.forEach(city => {
         const optionText = `${city.name} (${city.code})`;
-
-        // On utilise le NOM de la ville comme valeur pour rester cohérent
-        // avec la base de données (ville_depart / ville_arrivee).
-        // Le code IATA reste affiché dans le texte.
-
-        // Ajout au départ
         const depOption = document.createElement('option');
         depOption.value = city.name;
         depOption.textContent = optionText;
         departureSelect.appendChild(depOption);
 
-        // Ajout à l'arrivée
         const arrOption = document.createElement('option');
         arrOption.value = city.name;
         arrOption.textContent = optionText;
         arrivalSelect.appendChild(arrOption);
+    });
+}
+
+// --- Scroll Animations (Intersection Observer) ---
+function setupScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                // Une fois animé, on peut arrêter d'observer pour la performance
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observer tous les éléments avec la classe 'reveal'
+    document.querySelectorAll('.reveal').forEach(el => {
+        observer.observe(el);
     });
 }
 
@@ -536,6 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadComponents();
     initTabs();
     populateCities();
+    setupScrollAnimations();
 
     // Bind Forms
     const loginForm = document.getElementById('login-form');

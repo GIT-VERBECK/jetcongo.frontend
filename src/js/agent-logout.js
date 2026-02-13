@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn.addEventListener('click', (e) => {
             e.preventDefault();
             console.log('Logout clicked');
-            if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+            if (true) { // Confirmation simplified for direct execution or replaced by UI logic later
                 // Supprimer le token
                 localStorage.removeItem('jetcongo_token');
                 console.log('Token removed');

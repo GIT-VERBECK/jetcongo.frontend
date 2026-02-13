@@ -24,10 +24,10 @@
     }
 
     async function loadReservation() {
-            if (!reservationId) {
-                // On tente de charger depuis le stockage local si l'ID n'est pas présent
-                return loadFromLocal();
-            }
+        if (!reservationId) {
+            // On tente de charger depuis le stockage local si l'ID n'est pas présent
+            return loadFromLocal();
+        }
 
         const token = localStorage.getItem("jetcongo_token");
         if (!token) {
@@ -253,14 +253,19 @@
                 }
 
                 showAlert(
-                    "Paiement effectué avec succès. Votre réservation est maintenant PAYÉE.",
+                    "Paiement effectué avec succès. Votre reçu a été envoyé par mail. Redirection...",
                     "success"
                 );
+
+                // Redirection vers la page des vols après succès
+                setTimeout(() => {
+                    window.location.href = "flights.html";
+                }, 2000);
             } catch (error) {
                 console.error(error);
                 showAlert(
                     error.message ||
-                        "Une erreur est survenue lors du traitement du paiement.",
+                    "Une erreur est survenue lors du traitement du paiement.",
                     "error"
                 );
             } finally {

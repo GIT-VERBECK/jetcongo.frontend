@@ -243,7 +243,6 @@
 
     async function deleteAircraft(id) {
         if (!id) return;
-        if (!confirm("Supprimer cet avion ? Il doit ne pas être utilisé par un vol.")) return;
         try {
             const res = await fetch(`${API_BASE_URL}/admin/aircrafts/${id}`, {
                 method: "DELETE",

@@ -241,7 +241,6 @@
 
     async function deleteUser(id) {
         if (!id) return;
-        if (!confirm("Supprimer cet utilisateur ? Il ne doit pas avoir de réservations.")) return;
         try {
             const res = await fetch(`${API_BASE_URL}/admin/users/${id}`, {
                 method: "DELETE",

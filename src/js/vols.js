@@ -14,10 +14,7 @@ let isLoading = false;
 let hasMore = true;
 
 // Base URL de l'API FastAPI pour la recherche de vols (endpoint paginé)
-const FLIGHTS_API_BASE_URL =
-    typeof API_BASE_URL !== "undefined"
-        ? `${API_BASE_URL}/flights/`
-        : "http://localhost:8000/api/v1/flights/";
+const FLIGHTS_API_BASE_URL = `${API_BASE_URL}/flights/`;
 
 /**
  * Debounce utilitaire
@@ -175,7 +172,7 @@ function renderVols(vols, append = false) {
                     : "";
 
             return `
-                <div class="card flight-card mb-3 shadow-sm">
+                <div class="card flight-card mb-3 shadow-sm reveal">
                     <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center">
                         <div class="d-flex align-items-center mb-3 mb-md-0 flight-main-info">
                             <div class="flight-airline-icon me-3">
@@ -309,6 +306,7 @@ async function fetchVols({ append = false } = {}) {
         };
 
         renderVols(vols, append);
+        if (typeof setupScrollAnimations === 'function') setupScrollAnimations();
     } catch (error) {
         console.error("Erreur lors de la recherche de vols", error);
         showError("Une erreur est survenue lors de la recherche de vols. Veuillez réessayer.");

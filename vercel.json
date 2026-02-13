@@ -1,9 +1,9 @@
 {
-    "version": 2,
+    "cleanUrls": true,
     "rewrites": [
         {
-            "source": "/(.*)",
-            "destination": "/src/pages/$1"
+            "source": "/api/(.*)",
+            "destination": "https://jetcongo-backend.onrender.com/api/$1"
         }
     ]
 }
