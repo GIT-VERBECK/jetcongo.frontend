@@ -49,4 +49,4 @@ uvicorn app.main:app --host 0.0.0.0 --port 8001
 
 ** Page footer
 
-<img src="/src/docs/images/jet3.png" width="100%">
+<img src="/src/docs/images/jetf.png" width="100%">
