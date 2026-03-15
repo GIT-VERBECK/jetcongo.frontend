@@ -46,3 +46,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8001
 ** Page des destinations populaires 
 
 <img src="/src/docs/images/jet2.png" width="100%">
+
+** Page footer
+
+<img src="/src/docs/images/jet3.png" width="100%">
