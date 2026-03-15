@@ -42,3 +42,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8001
 ** Page d'accueil
 
 <img src="/src/docs/images/jet1.png" width="100%">
+
+** Page des destinations populaires 
+
+<img src="/src/docs/images/jet2.png" width="100%">
